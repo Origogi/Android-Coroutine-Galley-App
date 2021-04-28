@@ -7,16 +7,13 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
-import org.xml.sax.InputSource
-import org.xml.sax.helpers.DefaultHandler
+
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.regex.Pattern
-import javax.xml.parsers.SAXParser
-import javax.xml.parsers.SAXParserFactory
 
 class ImageDataProvider {
     private val baseUrl = "https://www.gettyimagesgallery.com/collection/sasha/"
@@ -30,14 +27,10 @@ class ImageDataProvider {
         GlobalScope.launch(dispatcher) {
             parse(channel)
         }
-
         return channel
-
     }
 
     private suspend fun parse(channel: SendChannel<ImageData>) {
-
-
         try {
             val url = URL(baseUrl)
 
@@ -63,7 +56,6 @@ class ImageDataProvider {
 
                             var imageUrl = ""
                             var title = ""
-
 
                             while (matcher.find()) {
                                 val token = (matcher.group(1))
