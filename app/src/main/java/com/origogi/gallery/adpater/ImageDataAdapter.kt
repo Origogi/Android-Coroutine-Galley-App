@@ -16,7 +16,8 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ImageDataAdapter(private val context: Context) : RecyclerView.Adapter<ImageDataAdapter.ViewHolder>() {
+class ImageDataAdapter(private val context: Context) :
+    RecyclerView.Adapter<ImageDataAdapter.ViewHolder>() {
 
     private val imageDataList = mutableListOf<ImageData>()
 
@@ -41,15 +42,16 @@ class ImageDataAdapter(private val context: Context) : RecyclerView.Adapter<Imag
             title.text = imageData.imageTitle
         }
 
-//        if (position <= imageDataList.size) {
-//            val endPosition = if (position + 6 > imageDataList.size) {
-//                imageDataList.size
-//            } else {
-//                position + 6
-//            }
-//            val images = imageDataList.subList(position, endPosition ).map { it.imageUrl }.toList()
-//            GlideImagePreload.fetch(context, images)
-//        }
+        if (position <= imageDataList.size) {
+            val endPosition = if (position + 6 > imageDataList.size) {
+                imageDataList.size
+            } else {
+                position + 6
+            }
+            imageDataList.subList(position, endPosition).map { it.imageUrl }.forEach {
+                GlideImagePreload.fetch(context, it)
+            }
+        }
     }
 
     override fun getItemCount() = imageDataList.size
