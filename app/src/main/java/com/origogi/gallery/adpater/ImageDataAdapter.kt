@@ -14,7 +14,8 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ImageDataAdapter(private val context: Context) : RecyclerView.Adapter<ImageDataAdapter.ViewHolder>() {
+class ImageDataAdapter(private val context: Context) :
+    RecyclerView.Adapter<ImageDataAdapter.ViewHolder>() {
 
     private val imageDataList = mutableListOf<ImageData>()
 
