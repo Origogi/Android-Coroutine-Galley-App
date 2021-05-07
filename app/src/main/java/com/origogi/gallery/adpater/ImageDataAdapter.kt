@@ -8,9 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.origogi.gallery.R
-import com.origogi.gallery.image.GlideImagePreload
 import com.origogi.gallery.model.ImageData
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -41,15 +39,17 @@ class ImageDataAdapter(private val context: Context) : RecyclerView.Adapter<Imag
             title.text = imageData.imageTitle
         }
 
-//        if (position <= imageDataList.size) {
-//            val endPosition = if (position + 6 > imageDataList.size) {
-//                imageDataList.size
-//            } else {
-//                position + 6
-//            }
-//            val images = imageDataList.subList(position, endPosition ).map { it.imageUrl }.toList()
-//            GlideImagePreload.fetch(context, images)
-//        }
+        //Preload
+        if (position <= imageDataList.size) {
+            val endPosition = if (position + 6 > imageDataList.size) {
+                imageDataList.size
+            } else {
+                position + 6
+            }
+            imageDataList.subList(position, endPosition ).map { it.imageUrl }.forEach {
+                preload(context, it)
+            }
+        }
     }
 
     override fun getItemCount() = imageDataList.size
@@ -63,4 +63,8 @@ class ImageDataAdapter(private val context: Context) : RecyclerView.Adapter<Imag
 
     }
 
+    fun preload(context: Context,  url : String) {
+        Glide.with(context).load(url)
+            .preload(150, 150)
+    }
 }
