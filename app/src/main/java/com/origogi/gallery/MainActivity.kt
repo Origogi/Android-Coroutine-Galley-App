@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
 import com.origogi.gallery.provider.ImageDataProvider
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
@@ -38,7 +39,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             while (!channel.isClosedForReceive) {
                 val imageData = channel.receive()
                 println(imageData)
-                viewAdapter.add(imageData)
+                withContext(Main) {
+                    viewAdapter.add(imageData)
+                }
             }
         }
     }
