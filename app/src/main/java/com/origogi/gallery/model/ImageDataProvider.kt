@@ -1,6 +1,5 @@
-package com.origogi.gallery.provider
+package com.origogi.gallery.model
 
-import com.origogi.gallery.model.ImageData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
-import com.origogi.gallery.provider.ImageDataProvider
+import com.origogi.gallery.model.ImageDataProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlin.coroutines.CoroutineContext
