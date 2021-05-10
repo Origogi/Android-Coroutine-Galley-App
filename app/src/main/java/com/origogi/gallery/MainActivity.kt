@@ -2,10 +2,14 @@ package com.origogi.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.renderscript.ScriptGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
 import com.origogi.gallery.model.ImageDataProvider
+import com.origogi.gallery.vm.MyViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +22,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+        get() = Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,17 +37,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             adapter = viewAdapter
         }
 
-        launch {
-            val channel = ImageDataProvider().get()
+        val viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-            while (!channel.isClosedForReceive) {
-                val imageData = channel.receive()
-                println(imageData)
-                withContext(Main) {
-                    viewAdapter.add(imageData)
-                }
-            }
-        }
+        viewModel.getImageDataList().observe(this, Observer {
+            viewAdapter.update(it)
+        })
     }
 
     override fun onDestroy() {
