@@ -2,6 +2,7 @@ package com.origogi.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope, MainContract.View {
     override fun addItem(imageData: ImageData) {
         launch {
             viewAdapter.add(imageData)
+        }
+    }
+
+    override fun updateCount(count: Int) {
+        launch {
+            findViewById<TextView>(R.id.counter).text = "Image Count : $count"
         }
     }
 }

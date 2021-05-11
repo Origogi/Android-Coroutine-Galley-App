@@ -6,6 +6,7 @@ class MainContract {
 
     interface View {
         fun addItem(imageData: ImageData)
+        fun updateCount(count : Int)
     }
 
     interface Presenter {
