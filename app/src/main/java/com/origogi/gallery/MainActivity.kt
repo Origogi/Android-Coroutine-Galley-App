@@ -3,6 +3,7 @@ package com.origogi.gallery
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.renderscript.ScriptGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         viewModel.getImageDataList().observe(this, Observer {
             viewAdapter.update(it)
+        })
+
+        viewModel.getCounter().observe(this, Observer {
+            findViewById<TextView>(R.id.counter).text = "Image Counter : ${it}"
         })
     }
 
