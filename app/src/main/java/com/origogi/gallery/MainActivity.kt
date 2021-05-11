@@ -2,9 +2,12 @@ package com.origogi.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
+import com.origogi.gallery.model.EndData
+import com.origogi.gallery.model.ImageData
 import com.origogi.gallery.model.ImageDataProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -16,9 +19,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ImageDataAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private var dataCount = 0
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+        get() = Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +38,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         launch {
+            dataCount = 0
+            findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
+
             val channel = ImageDataProvider().get()
 
             while (!channel.isClosedForReceive) {
-                val imageData = channel.receive()
-                println(imageData)
-                withContext(Main) {
-                    viewAdapter.add(imageData)
+
+                when (val data = channel.receive()) {
+                    is ImageData -> withContext(Main) {
+                        dataCount++
+                        findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
+                        viewAdapter.add(data)
+                    }
+                    is EndData -> channel.cancel()
                 }
             }
         }
@@ -50,4 +61,5 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onDestroy()
         job.cancel()
     }
+
 }
