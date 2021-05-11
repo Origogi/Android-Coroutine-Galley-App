@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             this, R.layout.activity_main
         )
 
-
         job = Job()
 
         viewManager = LinearLayoutManager(this)
@@ -42,9 +41,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-        viewModel.getImageDataList().observe(this, Observer {
-            viewAdapter.update(it)
-        })
+//        viewModel.getImageDataList().observe(this, Observer {
+//            viewAdapter.update(it)
+//        })
 
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this

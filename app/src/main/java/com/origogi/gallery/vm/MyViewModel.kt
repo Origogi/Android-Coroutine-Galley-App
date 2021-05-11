@@ -14,7 +14,6 @@ import kotlinx.coroutines.withContext
 
 class MyViewModel : ViewModel() {
 
-
     private val imageDataList: MutableLiveData<List<ImageData>> =
         MutableLiveData<List<ImageData>>().apply {
             viewModelScope.launch(Main) {

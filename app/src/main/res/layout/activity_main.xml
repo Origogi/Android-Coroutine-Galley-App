@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
+
     <data>
+
         <variable
             name="viewmodel"
-            type="com.origogi.gallery.vm.MyViewModel"/>
+            type="com.origogi.gallery.vm.MyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,12 +17,12 @@
         tools:context=".MainActivity">
 
         <TextView
-            android:text="@{`Image Count :  ` + viewmodel.counter}"
             android:id="@+id/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
+            android:text="@{`Image Count :  ` + viewmodel.counter}"
             app:layout_constraintBottom_toTopOf="@id/image_title_list"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -31,6 +33,7 @@
             android:id="@+id/image_title_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            bindItem="@{viewmodel.imageDataList}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/counter" />
     </androidx.constraintlayout.widget.ConstraintLayout>
