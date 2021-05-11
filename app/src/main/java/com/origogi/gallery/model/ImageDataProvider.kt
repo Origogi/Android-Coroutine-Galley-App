@@ -17,11 +17,11 @@ import java.util.regex.Pattern
 class ImageDataProvider {
     private val baseUrl = "https://www.gettyimagesgallery.com/collection/sasha/"
 
-    private val dispatcher = newFixedThreadPoolContext(4, "netwrok")
+    private val dispatcher = newFixedThreadPoolContext(4, "network")
 
-    fun get(): ReceiveChannel<ImageData> {
+    fun get(): ReceiveChannel<Data> {
 
-        val channel = Channel<ImageData>(Channel.UNLIMITED)
+        val channel = Channel<Data>(Channel.UNLIMITED)
 
         GlobalScope.launch(dispatcher) {
             parse(channel)
@@ -29,7 +29,7 @@ class ImageDataProvider {
         return channel
     }
 
-    private suspend fun parse(channel: SendChannel<ImageData>) {
+    private suspend fun parse(channel: SendChannel<Data>) {
         try {
             val url = URL(baseUrl)
 
@@ -72,13 +72,17 @@ class ImageDataProvider {
                     br.close(); // 스트림 해제
                 }
                 println("=========end=========")
-                conn.disconnect(); // 연결 끊기
+                conn.disconnect() // 연결 끊기
             }
 
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        finally {
+            channel.send(EndData(null))
+        }
+
     }
 
 

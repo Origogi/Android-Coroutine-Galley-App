@@ -1,3 +1,6 @@
 package com.origogi.gallery.model
 
-data class ImageData(val imageUrl : String, val imageTitle : String)
+sealed class Data
+
+data class ImageData(val imageUrl : String, val imageTitle : String) : Data()
+data class EndData(val nothing: Nothing?) : Data()
