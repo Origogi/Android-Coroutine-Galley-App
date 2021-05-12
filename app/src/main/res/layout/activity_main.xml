@@ -3,7 +3,6 @@
 <layout>
 
     <data>
-
         <variable
             name="viewmodel"
             type="com.origogi.gallery.vm.MyViewModel" />
