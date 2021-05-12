@@ -41,10 +41,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-//        viewModel.getImageDataList().observe(this, Observer {
-//            viewAdapter.update(it)
-//        })
-
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
     }

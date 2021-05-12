@@ -22,7 +22,7 @@ class ImageDataAdapter(private val context: Context) :
 
     class ViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ImageData) {
-            binding.title.text = data.imageTitle
+            binding.item = data
             binding.executePendingBindings()
         }
     }
@@ -64,7 +64,7 @@ class ImageDataAdapter(private val context: Context) :
     }
 
     fun update(list: List<ImageData>) {
-        val diffCallback = Diff<ImageData>(imageDataList, list)
+        val diffCallback = Diff(imageDataList, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         imageDataList.clear()
@@ -72,9 +72,9 @@ class ImageDataAdapter(private val context: Context) :
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private class Diff<T>(
-        private val oldItems: List<T>,
-        private val newItems: List<T>
+    private class Diff (
+        private val oldItems: List<ImageData>,
+        private val newItems: List<ImageData>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int =
@@ -84,7 +84,7 @@ class ImageDataAdapter(private val context: Context) :
             newItems.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return areContentsTheSame(oldItemPosition, newItemPosition)
+            return oldItems[oldItemPosition].imageUrl == newItems[newItemPosition].imageUrl
         }
 
         /**
