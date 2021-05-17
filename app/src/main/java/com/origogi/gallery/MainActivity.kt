@@ -11,6 +11,7 @@ import com.origogi.gallery.model.ImageData
 import com.origogi.gallery.model.ImageDataProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.channels.consumeEach
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
@@ -40,20 +41,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         launch {
             dataCount = 0
             findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
-
             val channel = ImageDataProvider().get()
 
-            while (!channel.isClosedForReceive) {
+            println("channel status ${channel.isClosedForReceive}")
 
-                when (val data = channel.receive()) {
-                    is ImageData -> withContext(Main) {
-                        dataCount++
-                        findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
-                        viewAdapter.add(data)
-                    }
-                    is EndData -> channel.cancel()
+
+            channel.consumeEach {
+                withContext(Main) {
+                    dataCount++
+                    findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
+                    viewAdapter.add(it)
                 }
             }
+
+            println("channel status ${channel.isClosedForReceive}")
         }
     }
 
