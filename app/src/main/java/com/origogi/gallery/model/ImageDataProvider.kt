@@ -1,6 +1,7 @@
 package com.origogi.gallery.model
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.channels.*
 
 import java.io.BufferedReader
@@ -13,10 +14,8 @@ import java.util.regex.Pattern
 class ImageDataProvider {
     private val baseUrl = "https://www.gettyimagesgallery.com/collection/sasha/"
 
-    private val dispatcher = newFixedThreadPoolContext(4, "network")
-
-    fun get(): ReceiveChannel<ImageData> {
-        return CoroutineScope(dispatcher).produce {
+    suspend fun get(coroutineScope: CoroutineScope): ReceiveChannel<ImageData> {
+        return coroutineScope.produce(IO) {
             try {
                 val url = URL(baseUrl)
                 val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -58,7 +57,7 @@ class ImageDataProvider {
                         br.close(); // 스트림 해제
                     }
                     println("=========end=========")
-                    conn.disconnect() // 연결 끊기
+                    conn.disconnect()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

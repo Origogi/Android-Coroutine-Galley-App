@@ -6,8 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
-import com.origogi.gallery.model.EndData
-import com.origogi.gallery.model.ImageData
 import com.origogi.gallery.model.ImageDataProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -41,11 +39,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         launch {
             dataCount = 0
             findViewById<TextView>(R.id.counter).text = "Image Count : $dataCount"
-            val channel = ImageDataProvider().get()
+            val channel = ImageDataProvider().get(this)
 
             println("channel status ${channel.isClosedForReceive}")
-
-
             channel.consumeEach {
                 withContext(Main) {
                     dataCount++

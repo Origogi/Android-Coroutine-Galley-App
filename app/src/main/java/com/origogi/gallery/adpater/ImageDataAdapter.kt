@@ -37,18 +37,6 @@ class ImageDataAdapter(private val context: Context) :
                 .into(image)
             title.text = imageData.imageTitle
         }
-
-        //Preload
-        if (position <= imageDataList.size) {
-            val endPosition = if (position + 6 > imageDataList.size) {
-                imageDataList.size
-            } else {
-                position + 6
-            }
-            imageDataList.subList(position, endPosition ).map { it.imageUrl }.forEach {
-                preload(context, it)
-            }
-        }
     }
 
     override fun getItemCount() = imageDataList.size
@@ -56,10 +44,5 @@ class ImageDataAdapter(private val context: Context) :
     fun add(imageData: ImageData) {
         imageDataList.add(imageData)
         notifyItemInserted(imageDataList.size)
-    }
-
-    fun preload(context: Context,  url : String) {
-        Glide.with(context).load(url)
-            .preload(150, 150)
     }
 }
