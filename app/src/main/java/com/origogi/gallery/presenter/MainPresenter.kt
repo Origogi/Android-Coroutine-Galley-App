@@ -1,10 +1,9 @@
 package com.origogi.gallery.presenter
 
-import com.origogi.gallery.model.EndData
-import com.origogi.gallery.model.ImageData
 import com.origogi.gallery.model.ImageDataProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.channels.consumeEach
 import kotlin.coroutines.CoroutineContext
 
 class MainPresenter(private val view: MainContract.View) : MainContract.Presenter, CoroutineScope {
@@ -22,21 +21,16 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
     }
 
     override fun launch() {
-
         count = 0
         launch {
             println("Thread : " + Thread.currentThread().name)
-            val channel = ImageDataProvider().get()
+            val channel = ImageDataProvider().get(this)
 
-            while (!channel.isClosedForReceive) {
-                val data = channel.receive()
+            channel.consumeEach {
                 count++
-                when(data) {
-                    is ImageData -> {
-                        view.addItem(data)
-                        view.updateCount(count)
-                    }
-                    is EndData -> channel.cancel()
+                withContext(Main) {
+                    view.addItem(it)
+                    view.updateCount(count)
                 }
             }
         }
