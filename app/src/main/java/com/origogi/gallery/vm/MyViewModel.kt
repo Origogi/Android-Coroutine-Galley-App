@@ -44,6 +44,7 @@ class MyViewModel : ViewModel() {
             channel.consumeEach {
                 withContext(Main) {
                     counter.value = counter.value!! + 1
+                    imageDataList.value = imageDataList.value!! + it
                 }
             }
         }

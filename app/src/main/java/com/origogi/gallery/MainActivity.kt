@@ -2,13 +2,11 @@ package com.origogi.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.origogi.gallery.adpater.ImageDataAdapter
-import com.origogi.gallery.databinding.ActivityMainBinding
 import com.origogi.gallery.vm.MyViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -26,9 +24,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
-            this, R.layout.activity_main
-        )
+        setContentView(R.layout.activity_main)
 
         job = Job()
 
@@ -41,8 +37,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = this
+        val counterTextView = findViewById<TextView>(R.id.counter)
+
+        viewModel.getCounter()
+            .observe(this, { count ->
+                counterTextView.text = "count : $count"
+            })
+
+        viewModel.getImageDataList().observe(this, { newList ->
+            viewAdapter.update(newList)
+        })
+
     }
 
     override fun onDestroy() {

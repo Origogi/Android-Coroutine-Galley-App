@@ -8,10 +8,6 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
 
-    dataBinding {
-        enabled = true
-    }
-
     defaultConfig {
         applicationId "com.origogi.gallery"
         minSdkVersion 23
