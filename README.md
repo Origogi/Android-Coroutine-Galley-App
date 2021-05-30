@@ -38,8 +38,15 @@ git checkout mvp
 git checkout mvvm-livedata
 ~~~
 
-## MVVM (databinding)
+## MVVM (Databinding)
 
 ~~~bash
 git checkout mvvm-databiding
 ~~~
+
+## Reference
+
+- [[Android] Coroutine을 활용한 안드로이드 디자인 패턴 - MVC](./2021-05-07-coroutine-mvc)
+- [[Android] Coroutine을 활용한 안드로이드 디자인 패턴 - MVP](./2021-05-24-coroutine-mvp)
+- [[Android] Coroutine을 활용한 안드로이드 디자인 패턴 - MVVM-LiveData](./2021-05-26-coroutine-mvvm-livedata)
+- [[Android] Coroutine을 활용한 안드로이드 디자인 패턴 - MVVM-DataBinding](./2021-05-27-coroutine-mvvm-data-binding)
