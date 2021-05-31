@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
-            this, R.layout.activity_main
-        )
-
+        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         job = Job()
 
         viewManager = LinearLayoutManager(this)

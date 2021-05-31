@@ -21,6 +21,10 @@ class ImageDataAdapter(private val context: Context) :
     private val imageDataList = mutableListOf<ImageData>()
 
     class ViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.lifecycleOwner =
+        }
+
         fun bind(data: ImageData) {
             binding.item = data
         }
@@ -36,31 +40,9 @@ class ImageDataAdapter(private val context: Context) :
         val imageData = imageDataList[position]
 
        holder.bind(imageData)
-
-        //Preload
-        if (position <= imageDataList.size) {
-            val endPosition = if (position + 6 > imageDataList.size) {
-                imageDataList.size
-            } else {
-                position + 6
-            }
-            imageDataList.subList(position, endPosition).map { it.imageUrl }.forEach {
-                preload(context, it)
-            }
-        }
     }
 
     override fun getItemCount() = imageDataList.size
-
-    fun add(imageData: ImageData) {
-        imageDataList.add(imageData)
-        notifyItemInserted(imageDataList.size)
-    }
-
-    fun preload(context: Context, url: String) {
-        Glide.with(context).load(url)
-            .preload(150, 150)
-    }
 
     fun update(list: List<ImageData>) {
         val diffCallback = Diff(imageDataList, list)
