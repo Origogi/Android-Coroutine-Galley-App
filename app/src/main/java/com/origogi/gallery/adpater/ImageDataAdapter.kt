@@ -23,7 +23,6 @@ class ImageDataAdapter(private val context: Context) :
     class ViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ImageData) {
             binding.item = data
-            binding.executePendingBindings()
         }
     }
 
